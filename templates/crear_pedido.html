@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Crear Pedido</h2>
+<form method="POST">
+    <div class="mb-3">
+        <label for="productos" class="form-label">Seleccionar Productos</label>
+        <select class="form-select" id="productos" name="productos" multiple required>
+            {% for producto in productos %}
+            <option value="{{ producto.id }}">{{ producto.nombre }} - ${{ "%.2f"|format(producto.precio) }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear Pedido</button>
+</form>
+{% endblock %}
