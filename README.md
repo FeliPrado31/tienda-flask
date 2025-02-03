@@ -98,7 +98,7 @@ tienda-flask/
 ├── app.py                   # Archivo principal de Flask
 ├── extensions.py            # Configuración de SQLAlchemy
 ├── models.py                # Definición de modelos de la base de datos
-├── schema.sql               # Esquema de la base de datos
+├── schema/                  # Esquema de la base de datos
 ├── routes/                  # Rutas de la aplicación
 │   ├── admin_routes.py      # Rutas para el administrador
 │   ├── auth_routes.py       # Rutas para autenticación
@@ -114,19 +114,7 @@ tienda-flask/
 
 ## 🔧 Pruebas y depuración
 
-Para habilitar el modo de depuración, asegúrate de que `debug=True` esté configurado en `app.run()` en `app.py`. Esto te permitirá ver errores detallados durante el desarrollo [[5]].
-
----
-
-## 🌟 Contribuciones
-
-Si deseas contribuir al proyecto, sigue estos pasos:
-
-1. Haz un fork del repositorio.
-2. Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
-3. Realiza tus cambios y haz commit (`git commit -m "Añadir nueva funcionalidad"`).
-4. Sube tus cambios (`git push origin feature/nueva-funcionalidad`).
-5. Abre un pull request.
+Para habilitar el modo de depuración, asegúrate de que `debug=True` esté configurado en `app.run()` en `app.py`. Esto te permitirá ver errores detallados durante el desarrollo.
 
 ---
 
