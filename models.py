@@ -14,12 +14,6 @@ class Producto(db.Model):
     nombre = db.Column(db.String(100), nullable=False)
     precio = db.Column(db.Float, nullable=False)
 
-class Cliente(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    pedidos = db.relationship('Pedido', backref='cliente', lazy=True)
-
 class Pedido(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cliente_id = db.Column(db.Integer, db.ForeignKey('cliente.id'), nullable=False)
@@ -33,3 +27,9 @@ class Detalle(db.Model):
     producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable=False)
     cantidad = db.Column(db.Integer, nullable=False)
     producto = db.relationship('Producto', backref='detalles', lazy=True)
+
+class Cliente(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    pedidos = db.relationship('Pedido', backref='cliente', lazy=True)

@@ -1,20 +1,26 @@
+<!-- File: templates/admin_dashboard.html -->
 {% extends "base.html" %}
-
 {% block content %}
-<h2>Panel del Administrador</h2>
+<div class="row">
+    <div class="col">
+        <h1 class="mb-4">Panel del Administrador</h1>
+    </div>
+    <div class="col text-end">
+        <a href="{{ url_for('admin.crear_producto') }}" class="btn btn-primary mb-4">Crear Producto</a>
+    </div>
+</div>
 
-<!-- Mostrar mensajes flash -->
+<!-- Mensajes flash -->
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
-        <div class="alert alert-dismissible fade show" role="alert">
-            {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">{{ message }}</div>
-            {% endfor %}
-        </div>
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
     {% endif %}
 {% endwith %}
 
-<a href="{{ url_for('admin.crear_producto') }}" class="btn btn-success mb-3">Crear Producto</a>
+<!-- Tabla de Productos -->
+<h2>Productos</h2>
 <table class="table table-striped">
     <thead>
         <tr>
@@ -31,8 +37,31 @@
             <td>{{ producto.nombre }}</td>
             <td>${{ "%.2f"|format(producto.precio) }}</td>
             <td>
-                <a href="{{ url_for('admin.editar_producto', id=producto.id) }}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{{ url_for('admin.eliminar_producto', id=producto.id) }}" class="btn btn-danger btn-sm">Eliminar</a>
+                <a href="{{ url_for('admin.editar_producto', id=producto.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{{ url_for('admin.eliminar_producto', id=producto.id) }}" class="btn btn-sm btn-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Tabla de Clientes -->
+<h2>Facturas por cliente</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Ver Facturas</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes %}
+        <tr>
+            <td>{{ cliente.id }}</td>
+            <td>{{ cliente.nombre }}</td>
+            <td>
+                <a href="{{ url_for('admin.ver_facturas_cliente', cliente_id=cliente.id) }}" class="btn btn-sm btn-info">Ver Facturas</a>
             </td>
         </tr>
         {% endfor %}
