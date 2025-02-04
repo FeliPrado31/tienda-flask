@@ -1,4 +1,3 @@
-<!-- File: templates/ver_facturas_cliente.html -->
 {% extends "base.html" %}
 {% block content %}
 <h1 class="mb-4">Facturas del Cliente: {{ cliente.nombre }}</h1>
@@ -41,6 +40,11 @@
         {% endfor %}
     </tbody>
 </table>
+
+<!-- Mostrar el total general -->
+<div class="mt-4">
+    <h4>Total General: ${{ "%.2f"|format(total_general) }}</h4>
+</div>
 
 <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Volver al Dashboard</a>
 {% endblock %}
