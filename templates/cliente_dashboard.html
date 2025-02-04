@@ -1,8 +1,11 @@
 {% extends "base.html" %}
-
 {% block content %}
-<h2>Panel del Cliente</h2>
-<a href="{{ url_for('cliente.crear_pedido') }}" class="btn btn-success mb-3">Crear Pedido</a>
+<h1 class="mb-4">Panel del Cliente</h1>
+
+<!-- Botón para crear un nuevo pedido -->
+<a href="{{ url_for('cliente.crear_pedido') }}" class="btn btn-primary mb-4">Crear Pedido</a>
+
+<!-- Tabla de Pedidos -->
 <table class="table table-striped">
     <thead>
         <tr>
@@ -20,15 +23,13 @@
             <td>{{ pedido.fecha_creacion }}</td>
             <td>{{ pedido.estado }}</td>
             <td>
-                <ul>
+                <ul class="list-unstyled">
                     {% for producto in pedido.productos %}
                     <li>{{ producto.nombre }} - ${{ "%.2f"|format(producto.precio) }} x {{ producto.cantidad }}</li>
                     {% endfor %}
                 </ul>
             </td>
-            <td>
-                ${{ "%.2f"|format(pedido.productos | sum(attribute='precio') * pedido.productos | sum(attribute='cantidad')) }}
-            </td>
+            <td>${{ "%.2f"|format(pedido.total) }}</td>
         </tr>
         {% endfor %}
     </tbody>

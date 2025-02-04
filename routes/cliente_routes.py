@@ -19,8 +19,8 @@ def dashboard():
         return redirect(url_for('auth.login'))
 
     pedidos = Pedido.query.filter_by(cliente_id=cliente.id).all()
-
     pedidos_con_detalles = []
+
     for pedido in pedidos:
         detalles = Detalle.query.filter_by(pedido_id=pedido.id).all()
         productos = [
@@ -31,12 +31,16 @@ def dashboard():
             }
             for detalle in detalles
         ]
+        total = sum(producto['precio'] * producto['cantidad'] for producto in productos)
+
         pedidos_con_detalles.append({
             'id': pedido.id,
             'fecha_creacion': pedido.fecha_creacion,
             'estado': pedido.estado,
-            'productos': productos
+            'productos': productos,
+            'total': total
         })
+
     return render_template('cliente_dashboard.html', pedidos=pedidos_con_detalles)
 
 
