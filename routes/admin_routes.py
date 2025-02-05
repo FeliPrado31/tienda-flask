@@ -17,48 +17,6 @@ def dashboard():
     return render_template('admin_dashboard.html', productos=productos, clientes=clientes)
 
 
-@admin_bp.route('/cliente/facturas/<int:cliente_id>')
-@login_required
-def ver_facturas_cliente(cliente_id):
-    if current_user.role != 'admin':
-        return redirect(url_for('auth.login'))
-
-    cliente = Cliente.query.get_or_404(cliente_id)
-
-    pedidos = Pedido.query.filter_by(cliente_id=cliente.id).all()
-
-    pedidos_con_detalles = []
-    total_general = 0
-
-    for pedido in pedidos:
-        detalles = Detalle.query.filter_by(pedido_id=pedido.id).all()
-        productos = [
-            {
-                'nombre': detalle.producto.nombre,
-                'precio': detalle.producto.precio,
-                'cantidad': detalle.cantidad
-            }
-            for detalle in detalles
-        ]
-
-        total_pedido = sum(producto['precio'] * producto['cantidad'] for producto in productos)
-        total_general += total_pedido
-
-        pedidos_con_detalles.append({
-            'id': pedido.id,
-            'fecha_creacion': pedido.fecha_creacion,
-            'estado': pedido.estado,
-            'productos': productos,
-            'total': total_pedido
-        })
-
-    return render_template(
-        'ver_facturas_cliente.html',
-        cliente=cliente,
-        pedidos=pedidos_con_detalles,
-        total_general=total_general
-    )
-
 @admin_bp.route('/producto/crear', methods=['GET', 'POST'])
 @login_required
 def crear_producto():
@@ -107,3 +65,45 @@ def eliminar_producto(id):
     db.session.commit()
     flash('Producto eliminado exitosamente.')
     return redirect(url_for('admin.dashboard'))
+
+@admin_bp.route('/cliente/facturas/<int:cliente_id>')
+@login_required
+def ver_facturas_cliente(cliente_id):
+    if current_user.role != 'admin':
+        return redirect(url_for('auth.login'))
+
+    cliente = Cliente.query.get_or_404(cliente_id)
+
+    pedidos = Pedido.query.filter_by(cliente_id=cliente.id).all()
+
+    pedidos_con_detalles = []
+    total_general = 0
+
+    for pedido in pedidos:
+        detalles = Detalle.query.filter_by(pedido_id=pedido.id).all()
+        productos = [
+            {
+                'nombre': detalle.producto.nombre,
+                'precio': detalle.producto.precio,
+                'cantidad': detalle.cantidad
+            }
+            for detalle in detalles
+        ]
+
+        total_pedido = sum(producto['precio'] * producto['cantidad'] for producto in productos)
+        total_general += total_pedido
+
+        pedidos_con_detalles.append({
+            'id': pedido.id,
+            'fecha_creacion': pedido.fecha_creacion,
+            'estado': pedido.estado,
+            'productos': productos,
+            'total': total_pedido
+        })
+
+    return render_template(
+        'ver_facturas_cliente.html',
+        cliente=cliente,
+        pedidos=pedidos_con_detalles,
+        total_general=total_general
+    )
